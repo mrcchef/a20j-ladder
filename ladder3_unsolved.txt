@@ -1,0 +1,10 @@
+51.Points on Line
+53.Little Pony and Expected Maximum
+56.Ice Skating
+74.Xenia and Bit Operations
+79.Ping Pong (Easy version)
+81.Tourist
+82.Colour strip
+83.Maze
+84.Valera and Tubes
+89.Xenina and weights
