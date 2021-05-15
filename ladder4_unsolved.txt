@@ -3,3 +3,11 @@
 37.Ice Skates
 40.Fox and Names
 41.Fox and two dots
+48.Convex Shape
+49.Maze
+51.Mr. Kitayuta, the Treasure Hunter
+53.Color Strips
+54.Checkpoints
+55.Misha and checkpoints
+61.Colourful Graph
+69.Xenia and weights

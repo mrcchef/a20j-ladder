@@ -14,6 +14,9 @@ using namespace std;
 #define deb(x) cout << #x << "=" << x << endl
 const ll mod = 1e9+7;
 
+ll dx[]={-1,0,1,0};
+ll dy[]={0,-1,0,1};
+
 ll msum(ll a,ll b,ll m) { return (a%m+b%m)%m; }
 ll msub(ll a,ll b,ll m) { return (a%m-b%m)%m; }
 ll mpro(ll a,ll b,ll m) { return ((a%m)*(b%m))%m; }
@@ -26,55 +29,56 @@ int main()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
-    ll n,m,i;
-    cin>>n>>m;
-    ll a[n+1];
-    for(i=1;i<=n;i++)
-        cin>>a[i];
-    ll check[n+1]={0};
-    if(n<=2)
+    int t=1;
+    // cin>>t;
+    while(t--)
     {
-        while(m--)
+        ll n,m,i;
+        cin>>n>>m;
+        vi v,inc,dec;
+        fo(i,n)
         {
-            cout<<"Yes"<<endl;
-        }
-        return 0;
-    }
-    for(ll i=1;i<=n;i++)
-    {
-        if(i==1)
-            check[i]=1;
-        else if(i==n)
-            check[i]=check[i-1]+1;
-        else
+            ll x;
+            cin>>x;
+            v.pb(x);
+        } 
+        fo(i,n-1)
         {
-            if(a[i]<a[i-1] && a[i]<a[i+1])
-                check[i]=check[i-1];
+            if(v[i]<=v[i+1])
+                inc.pb(i+1+1);
             else
-                check[i]=check[i-1]+1;
-        }
-    } 
-    for(auto x:check)
-        cout<<x<<":";
-    cout<<endl;;  
-    while(m--)
-    {
-        ll x,y;
-        cin>>x>>y;
-        ll diff=y-x;
-        if(diff<=1)
-            cout<<"Yes"<<endl;
-        else
-        {
-            if(diff-1==check[y-1]-check[x])
             {
-                cout<<"Yes";
+                dec.pb(i+1+1);
             }
+        }
+        for(auto x:inc)
+            cout<<x<<" ";
+        cout<<endl;
+        for(auto x:dec)
+            cout<<x<<" ";
+        cout<<endl;
+        fo(i,m)
+        {
+            ll L,R;
+            cin>>L>>R;
+            // if(n==1)
+            // {
+            //     cout<<"Yes"<<endl;
+            //     continue;
+            // }
+            ll idx1=upper_bound(inc.begin(),inc.end(),R)-inc.begin()-1;
+            ll idx2=lower_bound(dec.begin(),dec.end(),L)-dec.begin();
+            deb(idx1);
+            deb(idx2);
+            if(inc.size()==0 || dec.size()==0 || L==R || inc[idx1]<dec[idx2]) 
+                cout<<"Yes";
             else
+            {
                 cout<<"No";
+            }
             cout<<endl;
         }
-    }   
+    }
  return 0;
 }
 ll fxp(ll a,ll b,ll m) {
