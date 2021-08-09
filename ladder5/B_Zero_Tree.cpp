@@ -41,11 +41,13 @@ void _print(ull t) {cerr << t;}
 
 template <class T, class V> void _print(pair <T, V> p);
 template <class T> void _print(vector <T> v);
+// template <class T> void _print(<T> v []);
 template <class T> void _print(set <T> v);
 template <class T, class V> void _print(map <T, V> v);
 template <class T> void _print(multiset <T> v);
 template <class T, class V> void _print(pair <T, V> p) {cerr << "{"; _print(p.ff); cerr << ","; _print(p.ss); cerr << "}";}
 template <class T> void _print(vector <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
+// template <class T> void _print(<T> v []){ll i,sz=sizeof(v)/sizeof(T);cerr << "[ "; fo(i,sz) {_print(i); cerr << " ";} cerr << "]";}
 template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
@@ -61,59 +63,59 @@ ll msum(ll a,ll b,ll m);
 ll msub(ll a,ll b,ll m);
 ll mpro(ll a,ll b,ll m);
 
+const ll N=1e5+5;
+
+vector<vi> g(N);
+vi val(N);
+vi inc(N,0),decr(N,0);
+
+
+void dfs(ll node,ll par)
+{
+    for(auto nbr:g[node])
+    {
+        if(nbr==par)
+            continue;
+        
+        dfs(nbr,node);
+    
+        inc[node]=max(inc[node],inc[nbr]);
+        decr[node]=max(decr[node],decr[nbr]);
+
+        // debug(node)
+        // debug(inc[node])
+        // debug(decr[node])
+    }                                                                                  
+
+
+
+    ll tt=val[node]+inc[node]-decr[node];
+    // debug(node);
+    // debug(tt);
+    if(tt<0)
+        inc[node]-=tt;
+    else
+        decr[node]+=tt;
+}
+
 void solve()
 {
     ll n,i;
     cin>>n;
-    vi one,two;
-    one.pb(INT_MAX);
-    two.pb(INT_MAX);
+    fo(i,n-1)
+    {
+        ll x,y;
+        cin>>x>>y;
+        g[x].pb(y);
+        g[y].pb(x);
+    }
+
     fo(i,n)
     {
-        ll t,w;
-        cin>>t>>w;
-        if(t==1)
-            one.pb(w);
-        else   
-            two.pb(w);
+        cin>>val[i+1];
     }
-
-    sort(all(one),greater<ll>());
-    sort(all(two),greater<ll>());
-
-    ll osz=one.size()-1;
-    ll tsz=two.size()-1;
-
-    vi prefOne(osz+1,0);
-    vi prefTwo(tsz+1,0);
-
-    Fo(i,1,osz)
-        prefOne[i]=prefOne[i-1]+one[i];
-
-    Fo(i,1,tsz)
-        prefTwo[i]=prefTwo[i-1]+two[i];
-
-    ll ttOne=prefOne[osz];
-    ll ttTwo=prefTwo[tsz];
-    
-    ll j;
-    ll ans=INT_MAX;
-    fo(i,osz+1)
-    {
-        fo(j,tsz+1)
-        {
-            ll vwidth=i+2*j;
-            ll hwidth=ttOne-prefOne[i]+ttTwo-prefTwo[j];
-            if(vwidth>=hwidth)
-            {
-                ans=min(ans,vwidth);
-            }
-        }
-    }
-    // debug(one);
-    // debug(prefOne);
-    // debug(two);
-    // debug(prefTwo);
+    dfs(1,0);
+    ll ans=inc[1]+decr[1];
     cout<<ans<<endl;
 }
 

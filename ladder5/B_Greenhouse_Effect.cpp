@@ -63,58 +63,37 @@ ll mpro(ll a,ll b,ll m);
 
 void solve()
 {
-    ll n,i;
-    cin>>n;
-    vi one,two;
-    one.pb(INT_MAX);
-    two.pb(INT_MAX);
+    ll n,m,i;
+    cin>>n>>m;
+    vi v(n+1);
+    v[0]=0;
     fo(i,n)
     {
-        ll t,w;
-        cin>>t>>w;
-        if(t==1)
-            one.pb(w);
-        else   
-            two.pb(w);
+        lld x;
+        cin>>v[i+1]>>x;
     }
 
-    sort(all(one),greater<ll>());
-    sort(all(two),greater<ll>());
-
-    ll osz=one.size()-1;
-    ll tsz=two.size()-1;
-
-    vi prefOne(osz+1,0);
-    vi prefTwo(tsz+1,0);
-
-    Fo(i,1,osz)
-        prefOne[i]=prefOne[i-1]+one[i];
-
-    Fo(i,1,tsz)
-        prefTwo[i]=prefTwo[i-1]+two[i];
-
-    ll ttOne=prefOne[osz];
-    ll ttTwo=prefTwo[tsz];
-    
+    vi dp(n+1,0);
     ll j;
-    ll ans=INT_MAX;
-    fo(i,osz+1)
+
+    ll mx=0;
+
+    Fo(i,1,n)
     {
-        fo(j,tsz+1)
+        ll tmx=0;
+        for(j=i-1;j>=0;j--)
         {
-            ll vwidth=i+2*j;
-            ll hwidth=ttOne-prefOne[i]+ttTwo-prefTwo[j];
-            if(vwidth>=hwidth)
-            {
-                ans=min(ans,vwidth);
-            }
+            if(v[j]<=v[i])
+                tmx=max(tmx,dp[v[j]]+1);
         }
+        dp[v[i]]=tmx;
+        mx=max(mx,dp[v[i]]);
+        // debug(dp);
     }
-    // debug(one);
-    // debug(prefOne);
-    // debug(two);
-    // debug(prefTwo);
+    ll ans=n-mx;
     cout<<ans<<endl;
+
+
 }
 
 int main()
